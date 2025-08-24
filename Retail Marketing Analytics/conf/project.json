@@ -1,1 +1,7 @@
+Update placeholders in **conf/project.json**:
 
+* `workspace_dir`: Databricks workspace path for dbx deployments
+* `default_cluster`: define policy or job cluster configuration
+* `data`: set your storage account & containers
+
+---
