@@ -1,0 +1,16 @@
+* **Raw (landing)**: immutable drop of vendor files in ADLS (organized by source/date). No parsing.
+* **Bronze**: ingestion with Auto Loader to Delta; add ingest metadata and enforce basic schema.
+* **Silver**: conform & cleanse; deduplicate; apply business rules; build **dim\_**\* and **stg\_**\* tables; implement **SCD2** for `dim_customer_scd2`.
+* **Gold**: curated star schema (**fact\_order**, **dim\_customer\_scd2**, **dim\_product**, **dim\_campaign**), plus **mart** tables for marketing KPIs.
+
+**Storage**: ADLS Gen2 with Unity Catalog (recommended) or Hive metastore.
+
+```
+ADLS Containers:
+  abfss://raw@<storageacct>.dfs.core.windows.net/
+  abfss://bronze@<storageacct>.dfs.core.windows.net/
+  abfss://silver@<storageacct>.dfs.core.windows.net/
+  abfss://gold@<storageacct>.dfs.core.windows.net/
+```
+
+---
