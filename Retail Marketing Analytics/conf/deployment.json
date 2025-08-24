@@ -1,1 +1,58 @@
+```json
+{
+  "environments": {
+    "dev": {
+      "jobs": [
+        {
+          "name": "retail_bronze_ingest",
+          "tasks": [
+            {
+              "task_key": "bronze",
+              "python_wheel_task": {
+                "package_name": "retail",
+                "entry_point": "ingest_bronze",
+                "parameters": [
+                  "--raw_base", "abfss://raw@<storageacct>.dfs.core.windows.net/raw",
+                  "--catalog", "retail"
+                ]
+              },
+              "new_cluster": {"spark_version": "14.3.x-scala2.12", "num_workers": 2, "node_type_id": "Standard_DS3_v2"}
+            }
+          ]
+        },
+        {
+          "name": "retail_silver_transform",
+          "tasks": [
+            {
+              "task_key": "silver",
+              "python_wheel_task": {
+                "package_name": "retail",
+                "entry_point": "transform_silver",
+                "parameters": ["--catalog", "retail"]
+              },
+              "new_cluster": {"spark_version": "14.3.x-scala2.12", "num_workers": 2, "node_type_id": "Standard_DS3_v2"}
+            }
+          ]
+        },
+        {
+          "name": "retail_gold_load",
+          "tasks": [
+            {
+              "task_key": "gold",
+              "python_wheel_task": {
+                "package_name": "retail",
+                "entry_point": "load_gold",
+                "parameters": ["--catalog", "retail"]
+              },
+              "new_cluster": {"spark_version": "14.3.x-scala2.12", "num_workers": 2, "node_type_id": "Standard_DS3_v2"}
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+> Replace `<storageacct>` and the raw path as per your ADLS setup.
 
