@@ -1,0 +1,21 @@
+-- Patient Visit History
+CREATE OR REPLACE TABLE gold.patient_visit_history AS
+SELECT
+  e.encounter_id,
+  p.patient_id,
+  p.patient_name,
+  e.encounter_date,
+  e.diagnosis_code,
+  e.doctor
+FROM silver.dim_patients p
+JOIN silver.dim_encounters e
+  ON p.patient_id = e.patient_id;
+--
+-- Revenue per Insurance Provider
+CREATE OR REPLACE TABLE gold.revenue_analysis AS
+SELECT
+  b.insurance_provider,
+  SUM(b.amount) AS total_revenue,
+  COUNT(DISTINCT b.bill_id) AS total_bills
+FROM silver.fact_billing b
+GROUP BY b.insurance_provider;
