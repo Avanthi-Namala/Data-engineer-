@@ -1,0 +1,9 @@
+-- Deduplicate patients and standardize DOB
+CREATE OR REPLACE TABLE silver.dim_patients AS
+SELECT DISTINCT
+  patient_id,
+  INITCAP(name) AS patient_name,
+  gender,
+  to_date(dob, 'yyyy-MM-dd') AS dob,
+  city
+FROM raw_patients;
